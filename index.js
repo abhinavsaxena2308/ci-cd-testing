@@ -4,7 +4,7 @@ const app = express()
 const PORT = process.env.PORT ?? 8080
 
 app.get('/', (req, res) => {
-    return res.json({ msg: 'Hello from the server v8' })
+    return res.json({ msg: 'hello from the server' })
 })
 
 export default app
