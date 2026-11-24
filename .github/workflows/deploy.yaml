@@ -8,9 +8,6 @@ on:
 
 jobs:
 
-  # =========================
-  # JOB 1: CONTINUOUS INTEGRATION
-  # =========================
   testing:
     name: Build and Test
     runs-on: ubuntu-latest
@@ -31,9 +28,6 @@ jobs:
       - name: Run Tests
         run: npm test
 
-  # =========================
-  # JOB 2: CONTINUOUS DEPLOYMENT
-  # =========================
   deploy:
     name: Deploy to AWS EC2
     runs-on: ubuntu-latest
