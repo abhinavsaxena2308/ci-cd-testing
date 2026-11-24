@@ -7,6 +7,10 @@ app.get('/', (req, res) => {
     return res.json({ msg: 'Hello from the server v6' })
 })
 
-app.listen(PORT, () => {
-    console.log(`Server is up and running on PORT ${PORT}`)
-})
+export default app
+
+if (import.meta.main) {
+    app.listen(PORT, () => {
+        console.log(`Server is up and running on PORT ${PORT}`)
+    })
+}
