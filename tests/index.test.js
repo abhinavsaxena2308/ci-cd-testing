@@ -1,14 +1,19 @@
+import assert from 'node:assert/strict'
+import { test } from 'node:test'
+import app from '../index.js'
 
-import { test } from 'node:test';
-import assert from 'node:assert/strict';
+test('GET / returns the greeting', async (t) => {
+    const server = app.listen(0)
+    await new Promise((resolve) => server.once('listening', resolve))
 
-test('GET / returns a valid response', async () => {
-    const response = await fetch('http://localhost:8080');
+    t.after(() => new Promise((resolve, reject) => {
+        server.close((error) => error ? reject(error) : resolve())
+    }))
 
-    assert.equal(response.status, 200);
+    const address = server.address()
+    assert.ok(address && typeof address === 'object')
 
-    const data = await response.json();
-
-    assert.equal(typeof data.msg, 'string');
-    assert.ok(data.msg.length > 0);
-});
+    const response = await fetch(`http://127.0.0.1:${address.port}/`)
+    assert.equal(response.status, 200)
+    assert.deepEqual(await response.json(), { msg: 'Hello from the server v6' })
+})

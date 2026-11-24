@@ -1,35 +1,16 @@
+import express from 'express'
 
-import { test } from 'node:test';
-import assert from 'node:assert/strict';
-import { spawn } from 'node:child_process';
+const app = express()
+const PORT = process.env.PORT ?? 8080
 
-test('GET / returns a valid response', async () => {
-    const server = spawn('node', ['index.js'], {
-        env: { ...process.env, PORT: '8080' },
-        stdio: 'ignore'
-    });
+app.get('/', (req, res) => {
+    return res.json({ msg: 'Hello from the server v6' })
+})
 
-    try {
-        let response;
+export default app
 
-        for (let i = 0; i < 20; i++) {
-            try {
-                response = await fetch('http://127.0.0.1:8080');
-                break;
-            } catch {
-                await new Promise(resolve => setTimeout(resolve, 500));
-            }
-        }
-
-        assert.ok(response, 'Server is not running');
-        assert.equal(response.status, 200);
-
-        const data = await response.json();
-
-        assert.equal(typeof data.msg, 'string');
-        assert.ok(data.msg.length > 0);
-
-    } finally {
-        server.kill();
-    }
-});
+if (import.meta.main) {
+    app.listen(PORT, () => {
+        console.log(`Server is up and running on PORT ${PORT}`)
+    })
+}
